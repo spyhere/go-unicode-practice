@@ -75,10 +75,10 @@ func getBytesStatistics(text string, showWithRune bool) {
 			listB[idx] = fmt.Sprintf("%08b", text[idx])
 		}
 	}
-	fRow := []string{text, strconv.Itoa(strlen(text))}
+	rowData := []string{text, strconv.Itoa(strlen(text))}
 	bytesJoined := strings.Join(listB, "")
-	sRow := []string{bytesJoined, strconv.Itoa(strlen(bytesJoined))}
-	table, err := createStringifiedTable([]string{"Данные", "Длина"}, [][]string{fRow, sRow})
+	rowLen := []string{bytesJoined, strconv.Itoa(strlen(bytesJoined))}
+	table, err := createStringifiedTable([]string{"Данные", "Длина"}, [][]string{rowData, rowLen})
 	if err != nil {
 		log.Fatal(err)
 	}
