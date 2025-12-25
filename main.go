@@ -1,27 +1,49 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"math/bits"
+	"os"
 	"strconv"
 	"strings"
 )
 
-func strlen(input string) int {
-	return strings.Count(input, "") - 1
+func main() {
+	scanner := bufio.NewScanner(os.Stdin)
+	getBytesStatistics("Привет", true)
+	for {
+		fmt.Print("> ")
+		ok := scanner.Scan()
+		if !ok {
+			log.Fatal("failed to read")
+		}
+		if scanner.Text() == "q" {
+			getBytesStatistics("Пока", true)
+			return
+		}
+		arguments := strings.Split(
+			strings.TrimSpace(scanner.Text()),
+			" ",
+		)
+		if len(arguments) < 2 {
+			fmt.Println("usage: {text} {bool (display as rune?)}")
+		} else {
+			argsLen := len(arguments)
+			parsedBool, err := strconv.ParseBool(arguments[argsLen-1])
+			if err != nil {
+				fmt.Println("usage: {text} {bool (display as rune?)}")
+				return
+			}
+			text := strings.Join(arguments[0:argsLen-1], " ")
+			getBytesStatistics(text, parsedBool)
+		}
+	}
 }
 
-func main() {
-	// getBytesStatistics("Hey, how u doing?", false)
-	// getBytesStatistics("Привет, как дела?", true)
-	// getBytesStatistics("Привет, как дела?", false)
-	// getBytesStatistics("how", true)
-	// getBytesStatistics("как", true)
-	// getBytesStatistics("как", false)
-	getBytesStatistics("к", true)
-	getBytesStatistics("к", false)
-	// 110***** 10****** - Unicode wrap
+func strlen(input string) int {
+	return strings.Count(input, "") - 1
 }
 
 func getRoundedBitsNum(n int) int {
@@ -60,7 +82,6 @@ func getBytesStatistics(text string, showWithRune bool) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(">", text)
 	fmt.Printf("> %s (as rune: %t)\n", strings.Join(listR, ""), showWithRune)
 	fmt.Println(table)
 	table, err = createStringifiedTable(listR, [][]string{listB})
