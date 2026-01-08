@@ -43,12 +43,21 @@ Example:
  11010000 10111010 
 ```
 
-By adding `0000010000111010` (decoded as **UTF-8**) to the mask `110*****10******` we will have `1101000010111010` (raw bytes).
+By putting `0000010000111010` (binary representation of unicode code point) to the mask `110*****10******` we will have `1101000010111010`.
 
-Addition:
+Putting bits to **UTF-8** mask:
+1. **UTF-8** format is `110[5 bits payload] 10[6 bits payload]`.
+2. Unicode code point - `00000100 00111010` (binary)
+3. Drop leading zeros - `100 00111010`
+4. Split it to align **UTF-8** payload - `10000 111010` (5 bits + 6 bits)
+5. Add it to the mask - `11010000 10111010`
+
+Example:
 ```text
-00000100 00111010
-110***** 10******
-11010000 10111010
+1. 110***** 10****** - UTF-8 mask (* is a payload space)
+2. 00000100 00111010 - unicode code point with 5 leading zeros
+3.      100 00111010 - unicode code point without leading zeros
+4.    10000   111010 - unicode code point aligned with UTF-8 payload (5 bits + 6 bits)
+5. 11010000 10111010 - UTF-8 encoded Cyrillic symbol
 ```
 
