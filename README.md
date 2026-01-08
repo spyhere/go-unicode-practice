@@ -9,9 +9,15 @@ Current code is showing difference between Latin and Cyrillic symbols, how they 
 ### Usage
 
 Clone the repo, then inside run `go run .` and you will be met with `> `. Input the words from the language you want and put `true` or `false` at the end to tell the program whether you want to read it as **UTF-8** or raw bytes.
-Example:
+
+**Example:**
 ```bash
 к true
+```
+
+Quitting the program
+```bash
+q
 ```
 
 ### Details
@@ -22,8 +28,8 @@ Below is the **UTF-8** mask for 2 bytes character (Cyrillic):
 110***** 10******
 ```
 
-When `true` is selected (display as rune) then bytes are showing the Unicode after decoded with **UTF-8**, when `false` is selected then raw bytes are shown.
-That is why the same Cyrillic symbol "к" can give different bytes in this program.
+When `true` is selected (display as rune) then bytes are showing the Unicode without **UTF-8** mask, when `false` is selected then it's Unicode encoded with **UTF-8**.
+That is why the same Cyrillic symbol "к" can give different bytes in this program depending whether you selected `true` or `false` for rune display.
 Example:
 ```bash
 > к (as rune: true)
@@ -52,7 +58,7 @@ Putting bits to **UTF-8** mask:
 4. Split it to align **UTF-8** payload - `10000 111010` (5 bits + 6 bits)
 5. Add it to the mask - `11010000 10111010`
 
-Example:
+**Example:**
 ```text
 1. 110***** 10****** - UTF-8 mask (* is a payload space)
 2. 00000100 00111010 - unicode code point with 5 leading zeros
